@@ -8,4 +8,12 @@ public class Service
     public required string ServiceDescription {get; set; }
 
     public required ICollection<Employee> Employees {get; set; }
+
+    public Service(string serviceName, string serviceDescription, ICollection<Employee> employees) {
+        ServiceName = serviceName;
+        ServiceDescription = serviceDescription;
+        Employees = employees;
+    }
+
+    public Service() {}
 }
