@@ -3,17 +3,17 @@
 public class Service
 {
     public int ServiceId { get; set; }
-    public required string ServiceName {get; set; }
+    public required string ServiceName { get; set; }
 
-    public required string ServiceDescription {get; set; }
+    public required ICollection<Employee> Employees { get; set; }
 
-    public required ICollection<Employee> Employees {get; set; }
+    public int LocationId { get; set; }
 
-    public Service(string serviceName, string serviceDescription, ICollection<Employee> employees) {
+    public required Location Location { get; set; }
+    public Service(string serviceName)
+    {
         ServiceName = serviceName;
-        ServiceDescription = serviceDescription;
-        Employees = employees;
+        Employees = new List<Employee>();
     }
 
-    public Service() {}
 }

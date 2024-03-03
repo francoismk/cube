@@ -30,14 +30,23 @@ namespace cube.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("EmployeeId"));
 
-                    b.Property<DateTime>("EmployeeBirthDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("EmployeeEmail")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("EmployeeFirstName")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("EmployeeLandline")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("EmployeeLastName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EmployeePhoneNumber")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -63,9 +72,6 @@ namespace cube.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("ZipCode")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.ToTable("Locations");
@@ -81,10 +87,6 @@ namespace cube.Migrations
 
                     b.Property<int?>("LocationId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("ServiceDescription")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<string>("ServiceName")
                         .IsRequired()
@@ -104,6 +106,9 @@ namespace cube.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("UserEmail")
                         .IsRequired()

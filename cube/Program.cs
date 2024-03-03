@@ -1,5 +1,6 @@
 using cube;
 using Microsoft.EntityFrameworkCore;
+using Namespace;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,12 +8,24 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers().AddJsonOptions(x =>
-    x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve);
+// Pour éviter boucle de références
+// builder.Services.AddControllers().AddJsonOptions(x =>
+//     x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve);
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("default")));
+builder.Services.AddControllers().AddJsonOptions(x =>
+    x.JsonSerializerOptions.ReferenceHandler = null);
+
 
 builder.Services.AddScoped<IRepositoryData<Service>, ServiceRepository>();
 builder.Services.AddScoped<IRepositoryData<Employee>, EmployeeRepository>();
+builder.Services.AddScoped<IRepositoryData<Location>, LocationRepository>();
+builder.Services.AddScoped<IRepositoryEmployee, EmployeeRepository>();
+builder.Services.AddScoped<IRepositoryService, ServiceRepository>();
+builder.Services.AddScoped<IRepositoryLocation, LocationRepository>();
+builder.Services.AddScoped<EmployeeService>();
+builder.Services.AddScoped<ServiceService>();
+builder.Services.AddScoped<LocationService>();
+
 
 
 
