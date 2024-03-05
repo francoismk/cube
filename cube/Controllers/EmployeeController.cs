@@ -90,5 +90,27 @@ public class EmployeeController : ControllerBase
         return Ok(employeesDto);
     }
 
+    [HttpPut("{id}")]
+    public ActionResult Update(int id, [FromBody] EmployeeUpdateDTO employeeDto)
+    {
+        var updatedEmployee = _employeeService.UpdateEmployee(id, employeeDto);
+        if (updatedEmployee == null)
+        {
+            return BadRequest("Impossible de modifier cet employé.");
+        }
+        return Ok(employeeDto);
+    }
+
+    [HttpDelete("{id}")]
+    public ActionResult Delete(int id)
+    {
+        bool success = _employeeService.DeleteEmployee(id);
+        if (!success)
+        {
+            return BadRequest("Ce salarié n'existe pas.");
+        }
+        return Ok("Suppression effectuée"); // HTTP 204 comme réponse pour une suppression réussie
+    }
+
 }
 

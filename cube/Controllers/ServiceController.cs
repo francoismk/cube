@@ -15,6 +15,24 @@ public class ServiceController : ControllerBase
     _serviceService = serviceService;
   }
 
+  [HttpPost]
+  public IActionResult CreateService([FromBody] ServiceCreateDTO serviceDto)
+  {
+    try
+    {
+      var createdService = _serviceService.CreateService(serviceDto);
+      if (createdService == null)
+      {
+        return BadRequest("Impossible de créer le site.");
+      }
+      return CreatedAtAction(nameof(CreateService), new { id = createdService.ServiceId }, serviceDto);
+    }
+    catch (ArgumentException ex)
+    {
+      return BadRequest(ex.Message);
+    }
+  }
+
   [HttpGet("All")]
   public IActionResult GetAllServices()
   {
@@ -43,5 +61,51 @@ public class ServiceController : ControllerBase
     }
     return Ok(services);
   }
+
+  [HttpPut("{id}")]
+  // public ActionResult Update(int id, [FromBody] ServiceUpdateDTO serviceDto)
+  // {
+  //   var updatedService = _serviceService.UpdateService(id, serviceDto);
+  //   if (updatedService == null)
+  //   {
+  //     return BadRequest("Impossible de modifier cet employé.");
+  //   }
+  //   return Ok(serviceDto);
+  // }
+
+  public ActionResult Update(int id, ServiceUpdateDTO serviceDto)
+  {
+    try
+    {
+      var updatedService = _serviceService.UpdateService(id, serviceDto);
+      return Ok(updatedService);
+    }
+    catch (ArgumentException ex)
+    {
+      return NotFound(ex.Message); // Renvoie un 404 Not Found avec le message d'erreur
+    }
+  }
+
+  [HttpDelete("{id}")]
+  public ActionResult DeleteService(int id)
+  {
+    try
+    {
+      bool success = _serviceService.DeleteService(id);
+      if (!success)
+      {
+        return NotFound("Le service n'existe pas.");
+      }
+      return Ok("Suppression du service OK");
+    }
+    catch (ArgumentException ex)
+    {
+      return Conflict(ex.Message);
+    }
+  }
+
+
+
+
 }
 

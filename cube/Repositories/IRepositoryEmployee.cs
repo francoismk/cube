@@ -6,4 +6,5 @@ public interface IRepositoryEmployee : IRepositoryData<Employee>
     public IEnumerable<Employee> GetByServiceName(string serviceName);
 
     public IEnumerable<Employee> GetByServiceAndLocation(string serviceName, string locationName);
+    public IEnumerable<Employee> GetByServiceId(int id);
 }

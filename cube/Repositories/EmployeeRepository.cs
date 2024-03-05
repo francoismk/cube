@@ -50,7 +50,13 @@ public class EmployeeRepository : BaseRepository, IRepositoryEmployee, IReposito
 
     public bool Update(Employee entity)
     {
-        _dbContext.Update(entity);
+        var existingEmployee = _dbContext.Employees.Find(entity.EmployeeId);
+        if (existingEmployee == null)
+        {
+            return false;
+        }
+
+        _dbContext.Entry(existingEmployee).CurrentValues.SetValues(entity);
         _dbContext.SaveChanges();
         return true;
     }
@@ -69,6 +75,16 @@ public class EmployeeRepository : BaseRepository, IRepositoryEmployee, IReposito
             .Include(e => e.Service)
             .ThenInclude(s => s.Location)
             .Where(e => e.Service.ServiceName == serviceName)
+            .ToList();
+    }
+
+
+    public IEnumerable<Employee> GetByServiceId(int id)
+    {
+        return _dbContext.Employees
+            .Include(e => e.Service)
+            .ThenInclude(s => s.Location)
+            .Where(e => e.Service.ServiceId == id)
             .ToList();
     }
 

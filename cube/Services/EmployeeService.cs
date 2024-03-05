@@ -157,4 +157,55 @@ public class EmployeeService
         _employeeRepository.Create(employee);
         return employee;
     }
+
+    public Employee? UpdateEmployee(int id, EmployeeUpdateDTO employeeUpdateDto)
+    {
+        var existingEmployee = _employeeRepository.GetById(id);
+        if (existingEmployee == null)
+        {
+            throw new ArgumentException("Employé non trouvé.");
+        }
+
+        var service = _serviceRepository.GetAll().FirstOrDefault(s => s.ServiceName == employeeUpdateDto.ServiceName);
+        if (service == null)
+        {
+            throw new ArgumentException("Service non trouvé.");
+        }
+
+        var location = _locationRepository.GetAll().FirstOrDefault(l => l.LocationName == employeeUpdateDto.LocationName);
+        if (location == null)
+        {
+            throw new ArgumentException("Localisation non trouvée.");
+        }
+
+        if (service.LocationId != location.Id)
+        {
+            throw new ArgumentException("Le service n'appartient pas à la localisation spécifiée.");
+        }
+
+        existingEmployee.EmployeeFirstName = employeeUpdateDto.EmployeeFirstName;
+        existingEmployee.EmployeeLastName = employeeUpdateDto.EmployeeLastName;
+        existingEmployee.EmployeeLandline = employeeUpdateDto.EmployeeLandline;
+        existingEmployee.EmployeePhoneNumber = employeeUpdateDto.EmployeePhoneNumber;
+        existingEmployee.EmployeeEmail = employeeUpdateDto.EmployeeEmail;
+        existingEmployee.ServiceId = service.ServiceId;
+
+
+        _employeeRepository.Update(existingEmployee);
+        return existingEmployee;
+    }
+
+    public bool DeleteEmployee(int id)
+    {
+        var employee = _employeeRepository.GetById(id);
+        if (employee == null)
+        {
+
+            return true;
+        }
+
+
+        _employeeRepository.Delete(employee);
+        return true;
+    }
 }

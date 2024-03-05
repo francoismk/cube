@@ -14,14 +14,3 @@ public class Employee
 
     public Service Service { get; set; }
 }
-
-// var employeeDto = new EmployeeDTO
-// {
-//     EmployeeId = employee.EmployeeId,
-//     EmployeeFirstName = employee.EmployeeFirstName,
-//     EmployeeLastName = employee.EmployeeLastName,
-//     EmployeeBirthDate = employee.EmployeeBirthDate,
-//     ServiceName = employee.Service?.ServiceName, // Utiliser ?. pour la sécurité null
-//     ServiceDescription = employee.Service?.ServiceDescription,
-//     LocationName = employee.Service?.Location?.LocationName // Chaînage sécurisé pour le cas où Service ou Location pourrait être null
-// };

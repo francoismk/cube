@@ -3,13 +3,13 @@
 public class Service
 {
     public int ServiceId { get; set; }
-    public required string ServiceName { get; set; }
+    public string ServiceName { get; set; }
 
-    public required ICollection<Employee> Employees { get; set; }
+    public ICollection<Employee> Employees { get; set; }
 
     public int LocationId { get; set; }
 
-    public required Location Location { get; set; }
+    public Location Location { get; set; }
     public Service(string serviceName)
     {
         ServiceName = serviceName;

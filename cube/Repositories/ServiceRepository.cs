@@ -10,16 +10,25 @@ public class ServiceRepository : BaseRepository, IRepositoryService, IRepository
     public ServiceRepository(ApplicationDbContext dbContext) : base(dbContext) { }
     public bool Create(Service entity)
     {
-        _dbContext.Add(entity);
-        _dbContext.SaveChanges();
-        return true;
+        if (entity == null)
+        {
+            throw new ArgumentNullException(nameof(entity), "Le service fourni est null.");
+        }
+        try
+        {
+            _dbContext.Services.Add(entity);
+            _dbContext.SaveChanges();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("Erreur lors de la création du service.", ex);
+        }
     }
 
     public bool Delete(Service entity)
     {
-        var found = GetById(entity.ServiceId);
-        if (found == null) return false;
-        _dbContext.Remove(found);
+        _dbContext.Remove(entity);
         _dbContext.SaveChanges();
         return true;
     }
@@ -33,18 +42,18 @@ public class ServiceRepository : BaseRepository, IRepositoryService, IRepository
     {
         return _dbContext.Services
         .Include(service => service.Location)
-        .FirstOrDefault(service => service.LocationId == id);
+        .FirstOrDefault(service => service.ServiceId == id);
     }
 
     public bool Update(Service entity)
     {
-        var found = GetById(entity.ServiceId);
-        if (found == null) return false;
-        foreach (var prop in typeof(Service).GetProperties())
+        var existingService = _dbContext.Services.Find(entity.ServiceId);
+        if (existingService == null)
         {
-            if (prop.Name != "ServiceId") prop.SetValue(found, prop.GetValue(entity));
+            return false;
         }
-        _dbContext.Update(found);
+
+        _dbContext.Entry(existingService).CurrentValues.SetValues(entity);
         _dbContext.SaveChanges();
         return true;
     }
@@ -55,6 +64,22 @@ public class ServiceRepository : BaseRepository, IRepositoryService, IRepository
             .Include(service => service.Location)
             .Where(service => service.Location.LocationName == locationName)
             .ToList();
+    }
+
+
+    public List<Service> GetServicesByLocationId(int id)
+    {
+        return _dbContext.Services
+            .Include(service => service.Location)
+            .Where(service => service.Location.Id == id)
+            .ToList();
+    }
+
+    public Service? GetByIdWithEmployees(int id)
+    {
+        return _dbContext.Services
+        .Include(s => s.Employees)
+        .FirstOrDefault(s => s.ServiceId == id);
     }
 
 

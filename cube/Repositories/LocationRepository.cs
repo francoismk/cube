@@ -40,7 +40,13 @@ public class LocationRepository : BaseRepository, IRepositoryLocation, IReposito
 
     public bool Update(Location entity)
     {
-        _dbContext.Update(entity);
+        var existingLocation = _dbContext.Locations.Find(entity.Id);
+        if (existingLocation == null)
+        {
+            return false;
+        }
+
+        _dbContext.Entry(existingLocation).CurrentValues.SetValues(entity);
         _dbContext.SaveChanges();
         return true;
     }

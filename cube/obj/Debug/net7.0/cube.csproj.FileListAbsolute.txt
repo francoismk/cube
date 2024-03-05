@@ -115,3 +115,4 @@ C:/Users/F/Developments/cesi/cube/cube/bin/Debug/net7.0/Websocket.Client.dll
 /home/20014974/dev_cesi/project_dotnet/cube/cube/obj/Debug/net7.0/cube.pdb
 /home/20014974/dev_cesi/project_dotnet/cube/cube/obj/Debug/net7.0/cube.genruntimeconfig.cache
 /home/20014974/dev_cesi/project_dotnet/cube/cube/obj/Debug/net7.0/ref/cube.dll
+/home/20014974/dev_cesi/project_dotnet/cube/cube/bin/Debug/net7.0/appsettings.Development.json
